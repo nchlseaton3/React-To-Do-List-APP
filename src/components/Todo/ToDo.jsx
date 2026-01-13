@@ -34,6 +34,14 @@ const ToDo = ({ todos, setTodos }) => {
     )
   }
 
+  const deleteTodo = todoId => {
+    setTodos(prevData =>
+      prevData.filter(todo => todo.id !== todoId)
+    )
+  }
+
+  const remainingCount = todos.filter(todo => !todo.completed).length
+
   return (
     <div>
 
@@ -47,21 +55,34 @@ const ToDo = ({ todos, setTodos }) => {
         <button type="submit">Add</button>
       </form>
 
-      <ul>
-        {todos.map(todo => (
-          <li key={todo.id}>
-            <span
-              onClick={() => toggleTodo(todo.id)}
-              style={{
-                cursor: "pointer",
-                textDecoration: todo.completed ? "line-through" : "none"
-              }}
-            >
-              {todo.text}
-            </span>
-          </li>
-        ))}
-      </ul>
+      <p>Remaining: {remainingCount}</p>
+
+      {todos.length === 0 ? (
+        <p>No todos yet</p>
+      ) : (
+        <ul>
+          {todos.map(todo => (
+            <li key={todo.id}>
+              <span
+                onClick={() => toggleTodo(todo.id)}
+                style={{
+                  cursor: "pointer",
+                  textDecoration: todo.completed ? "line-through" : "none"
+                }}
+              >
+                {todo.text}
+              </span>
+
+              <button
+                type="button"
+                onClick={() => deleteTodo(todo.id)}
+              >
+                Delete
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
 
     </div>
   )
