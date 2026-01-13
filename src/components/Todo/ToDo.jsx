@@ -24,8 +24,19 @@ const ToDo = ({ todos, setTodos }) => {
     setNewTodo("")
   }
 
+  const toggleTodo = todoId => {
+    setTodos(prevData =>
+      prevData.map(todo =>
+        todo.id === todoId
+          ? { ...todo, completed: !todo.completed }
+          : todo
+      )
+    )
+  }
+
   return (
     <div>
+
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -35,6 +46,23 @@ const ToDo = ({ todos, setTodos }) => {
         />
         <button type="submit">Add</button>
       </form>
+
+      <ul>
+        {todos.map(todo => (
+          <li key={todo.id}>
+            <span
+              onClick={() => toggleTodo(todo.id)}
+              style={{
+                cursor: "pointer",
+                textDecoration: todo.completed ? "line-through" : "none"
+              }}
+            >
+              {todo.text}
+            </span>
+          </li>
+        ))}
+      </ul>
+
     </div>
   )
 }
